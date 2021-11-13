@@ -92,9 +92,12 @@ app.post("/users", async (req, res) => {
 
     // check admin 
   app.get("/users/:email", async (req, res) => {
-    const result = await usersCollection.find({ email: req.params.email }).toArray();
-    console.log(result);
-    res.send(result);
+    const user = await usersCollection.findOne({ email: req.params.email });
+    let isAdmin = false;
+    if(user?.role === "admin"){
+       isAdmin= true;
+    }
+    res.json({admin: isAdmin});
   });
 
    // review
